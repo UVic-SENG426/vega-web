@@ -1,9 +1,4 @@
 import SimplePageLayout from "../templates/SimplePageLayout.js";
-import {
-  fetchuser,
-  enableAccount,
-  changeAccountRole,
-} from "../../service/AdminPanel/AdminPanel.js";
 import { UserContext } from "../../auth/UserProvider.js";
 import { useState, useContext, useEffect, useRef } from "react";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
@@ -12,18 +7,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const ManageSecrets = (props) => {
-  const [selectFile, setSelectFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
   const [inputName, setInputName] = useState("");
   const inputRef = useRef("");
 	const {user} = useContext(UserContext);
 
-  const changeHandler = (event) => {
-    setSelectFile(event.target.files[0]);
-    setIsFilePicked(true);
-  };
   const [showAdd, setShowAdd] = useState(0);
   const [showEdit, setShowEdit] = useState(null);
+  const [showShare, setShowShare] = useState(null);
 
   const [data, setData] = useState([]);
 
@@ -39,11 +29,10 @@ const ManageSecrets = (props) => {
     getSecrets();
   }, [user])
 
-  const [editDisplay, setEditDisplay] = useState(<div></div>);
-
   const handleClick = () => {
     setShowAdd(1);
   };
+
   const handleClickSubmit = () => {
     if (inputName != "") {
       let submitObject = {
@@ -66,6 +55,21 @@ const ManageSecrets = (props) => {
       };
       
       updateSecret(secret, submitObject, user.jwt).then(res => {
+        console.log(res)
+      })
+
+      window.location.reload()
+    }
+  };
+
+  function handleClickSubmitShare(secret) {
+    if (inputRef.current.value != "") {
+      let submitObject = {
+        value: secret,
+        username: inputRef.current.value,
+      };
+
+      addSecret(submitObject, user.jwt).then(res => {
         console.log(res)
       })
 
@@ -162,26 +166,11 @@ const ManageSecrets = (props) => {
               setShowEdit(index);
             };
 
-            if (showEdit != index) {
-              return (
-                <tr>
-                  <td>{Secret.value}</td>
-                  <td>{Secret.username}</td>
-                  <td>{Secret.date}</td>
-                  <td>
-                    {" "}
-                    <button onClick={(e) => handleEdit(index, e)}>Share</button>
-                    {" "}
-                    <button onClick={(e) => handleEdit(index, e)}>Edit</button>
-                  </td>
-                  <td>
-                    <button onClick={(e) => handleDelete(Secret.secret, index, e)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            } else {
+            const handleShare = (index, e) => {
+              setShowShare(index);
+            };
+
+            if (showEdit == index) {
               return (
                 <tr>
                   <td>
@@ -199,6 +188,46 @@ const ManageSecrets = (props) => {
                   <td></td>
                   <td>
                     <button onClick={() => handleClickSubmitEdit(Secret.secret)}>*SUBMIT*</button>
+                  </td>
+                </tr>
+              );
+            } else if (showShare == index) {
+              return (
+                <tr>
+                  <td>
+                    <input
+                      ref={inputRef}
+                      type="email"
+                      id="sharemessage"
+                      name="sharemessage"
+                      placeholder="Enter Email Address"
+                      autoComplete="off"
+                    ></input>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <button onClick={() => handleClickSubmitShare(Secret.value)}>*SUBMIT*</button>
+                  </td>
+                </tr>
+              );
+            } else {
+              return (
+                <tr>
+                  <td>{Secret.value}</td>
+                  <td>{Secret.username}</td>
+                  <td>{Secret.date}</td>
+                  <td>
+                    {" "}
+                    <button onClick={(e) => handleShare(index, e)}>Share</button>
+                    {" "}
+                    <button onClick={(e) => handleEdit(index, e)}>Edit</button>
+                  </td>
+                  <td>
+                    <button onClick={(e) => handleDelete(Secret.secret, index, e)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
