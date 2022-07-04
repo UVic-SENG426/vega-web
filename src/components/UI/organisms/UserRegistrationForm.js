@@ -6,7 +6,7 @@ const UserRegistrationForm = (props) => {
         <Form>
       			<Form.Group className="mb-3">
         			<Form.Label>NAME</Form.Label>
-        			<Form.Control type="email" />
+        			<Form.Control type="text" />
       			</Form.Group>
       			<Form.Group className="mb-3">
         			<Form.Label>EMAIL</Form.Label>

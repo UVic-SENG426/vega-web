@@ -1,14 +1,10 @@
 import { useState, useContext } from "react";
-import { Button } from "react-bootstrap";
 import UserRegistrationPageLayout from "../templates/UserRegistrationPageLayout.js";
-import LoginUser from "../UI/organisms/LoginUser.js";
+import UserCreationForm from "../UI/organisms/UserCreationForm";
 import { login } from "../../service/auth/AuthenticationManager.js";
 import { UserContext } from "../../auth/UserProvider.js";
-import { Redirect, Link } from "react-router-dom";
 
-const Login = (props) => {
-  //const navigate = useNavigate();
-
+const Register = (props) => {
   const { context } = props;
   const { user, setUserInfo, logout } = useContext(UserContext);
   const [auth, setAuth] = useState(false);
@@ -26,13 +22,11 @@ const Login = (props) => {
   if (!auth) {
     return (
       <UserRegistrationPageLayout>
-        <LoginUser onSubmit={onSubmit} />
-        <Link to="/register">Sign up</Link>
+        <h1>Create an account</h1>
+        <UserCreationForm onSubmit={onSubmit} />
       </UserRegistrationPageLayout>
     );
-  } else {
-    return <Redirect to="/news" />;
   }
 };
 
-export default Login;
+export default Register;

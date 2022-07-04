@@ -32,6 +32,28 @@ export async function doGet(url, token) {
 }
 
 
+export async function doDelete(url, token) {
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers:{
+      'Authorization':'Bearer '+token
+    }
+  });
+  return await handleResponse(response);
+}
+
+export async function doPutWithToken(url, data, token) {
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers:{
+      "Content-Type": "application/json",
+      'Authorization':'Bearer '+token
+    },
+    body: JSON.stringify(data)
+  });
+  return await handleResponse(response);
+}
+
 export async function doPost(url, data) {
   console.debug('Request data:', data);
   const response = await fetch(url, {
@@ -41,6 +63,20 @@ export async function doPost(url, data) {
     },
     body: JSON.stringify(data),
   });
+  return await handleResponse(response);
+}
+
+export async function doPostWithToken(url, data, token) {
+  console.log('Request data:', JSON.stringify(data));
+  const response = await fetch(url, {
+    method: 'POST',
+    headers:{
+      "Content-Type": "application/json",
+      'Authorization':'Bearer '+token
+    },
+    body: JSON.stringify(data)
+  });
+
   return await handleResponse(response);
 }
 

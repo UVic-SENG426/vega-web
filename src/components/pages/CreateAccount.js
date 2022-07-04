@@ -1,9 +1,9 @@
 import UserRegistrationPageLayout from "../templates/UserRegistrationPageLayout.js";
-import UserRegistrationForm from "../UI/organisms/UserRegistrationForm.js";
+import UserCreationForm from "../UI/organisms/UserCreationForm.js";
 const UserRegistration = (props) => {
   return (
     <UserRegistrationPageLayout>
-      <UserRegistrationForm />
+      <UserCreationForm />
     </UserRegistrationPageLayout>
   );
 };
