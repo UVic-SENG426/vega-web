@@ -29,13 +29,6 @@ stages:
       vmImage: $(vmImageName)
     steps:
 
-    - task: SonarQubePrepare@5
-      inputs:
-        SonarQube: 'Sonar'
-        scannerMode: 'MSBuild'
-        projectKey: 'SENG426Group2_SENG426Group2Project'
-        projectName: 'SENG426Group2Project'
-
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
