@@ -8,6 +8,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 const app = express();
+app.disable('x-powered-by');
 const port = 8000;
 const env = config();
 
